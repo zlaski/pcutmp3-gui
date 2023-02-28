@@ -1,3 +1,6 @@
+NB: In order to run, please install the FULL package (containing JavaFX) 
+    of the Liberica JDK (https://bell-sw.com/pages/downloads/)
+
 pcutmp3-gui
 ===========
 
