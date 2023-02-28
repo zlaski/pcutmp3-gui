@@ -1,7 +1,33 @@
 {
     "java.project.outputPath": ".build",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\**\\*.jar"
-    ]
+    "java.project.referencedLibraries": {
+        "include": [
+            "libraries/**/*.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\**\\*.jar",
+            "c:\\Program Files\\OpenJDK\\javafx-sdk-19\\**\\*.jar"
+        ],
+        "exclude": [
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\applets\\MoleculeViewer\\MoleculeViewer.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\applets\\WireFrame\\WireFrame.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\CodePointIM\\CodePointIM.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\FileChooserDemo\\FileChooserDemo.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\Font2DTest\\Font2DTest.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\Metalworks\\Metalworks.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\Notepad\\Notepad.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\SampleTree\\SampleTree.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\SwingApplet\\SwingApplet.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\TableExample\\TableExample.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jfc\\TransparentRuler\\TransparentRuler.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jpda\\examples.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jvmti\\heapTracker\\heapTracker.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jvmti\\minst\\minst.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\jvmti\\mtrace\\mtrace.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\management\\FullThreadDump\\FullThreadDump.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\management\\JTop\\JTop.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\management\\MemoryMonitor\\MemoryMonitor.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\management\\VerboseGC\\VerboseGC.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\nio\\zipfs\\zipfs.jar",
+            "c:\\Program Files\\OpenJDK\\openjdk-8u302-b08\\demo\\scripting\\jconsole-plugin\\jconsole-plugin.jar"
+        ]
+    }
 }
