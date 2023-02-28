@@ -28,16 +28,10 @@ import de.zebee.mpa.util.ScannedMP3;
  */
 public class MainCLI {
 	
-	public interface Report {
-		public void println(String msg);
-	};
-
     private static String EVIL_CHARS   = "?*\":/\\";
     private static String REPLACE_WITH = "  '   ";
     private static long   sampleHz     = 44100;
     
-    private Report _reporter;
-
     public static String replaceEvilCharacters(String s) {
         StringBuffer sb = new StringBuffer(s);
         for (int cc = EVIL_CHARS.length() - 1; cc >= 0; cc--) {
@@ -65,7 +59,7 @@ public class MainCLI {
 
     public long toSampleRate(long frm) {
         long cfrm = (long) (frm * (double) (sampleHz / 44100.0));
-        _reporter.println("frm = " + frm + ", cfrm = " + cfrm + ", sampleHz = " + sampleHz);
+        System.out.println("frm = " + frm + ", cfrm = " + cfrm + ", sampleHz = " + sampleHz);
         return cfrm;
     }
 
@@ -88,14 +82,13 @@ public class MainCLI {
 
     public static final String DEFAULT_NAMING_SCHEME = "%n. %p - %t";
     
-    public MainCLI(Report r) {
-    	_reporter = r;
-    	// does currently nothing
-    }
-
+    //public static void main(String[] args) throws IOException {
+    //    new MainCLI().run(args);
+    //}
+    
     public void run(String[] args) throws IOException {
-        _reporter.println("\nPCutMP3 -- Properly Cut MP3 v0.99 beta");
-        _reporter.println("  This version has been modified to deal with 48000Hz files properly\n");
+        System.out.println("\nPCutMP3 -- Properly Cut MP3 v0.99 beta");
+        System.out.println("  This version has been modified to deal with 48000Hz files properly\n");
 
         if (args == null || args.length < 1) {
             printHelp();
@@ -149,7 +142,7 @@ public class MainCLI {
             }
         }
         if (missingOptionParam) {
-            _reporter.println("missing option parameter");
+            System.out.println("missing option parameter");
             return;
         }
 
@@ -195,26 +188,26 @@ public class MainCLI {
         if (srcFile != null) {
             srcFileFile = new File(srcFile);
             if (!srcFileFile.canRead()) {
-                _reporter.println("can't access source mp3 file (" + srcFileFile + ")");
+                System.out.println("can't access source mp3 file (" + srcFileFile + ")");
                 return;
             }
         }
         else {
-            _reporter.println("source mp3 file not given");
+            System.out.println("source mp3 file not given");
             System.exit(1);
         }
 
         ScannedMP3 scannedMP3 = null;
         try {
-            _reporter.println("scanning \"" + srcFile + "\" ...");
+            System.out.println("scanning \"" + srcFile + "\" ...");
             scannedMP3 = new ScannedMP3(new FileInputStream(srcFileFile));
         }
         catch (FileNotFoundException e) {
-            _reporter.println("file not found (" + srcFileFile + ")");
+            System.out.println("file not found (" + srcFileFile + ")");
             return;
         }
         catch (IOException e) {
-            _reporter.println("i/o error occured while scanning source mp3 file (" + srcFileFile
+            System.out.println("i/o error occured while scanning source mp3 file (" + srcFileFile
                     + ")");
             e.printStackTrace();
             return;
@@ -225,13 +218,13 @@ public class MainCLI {
          * parseManualCrop(cutParams, scannedMP3 .getSamplingFrequency()); }
          */
 
-        _reporter.println(scannedMP3.toString());
+        System.out.println(scannedMP3.toString());
         sampleHz = scannedMP3.getSamplingFrequency();
-        _reporter.println("sampleHz = " + sampleHz);
+        System.out.println("sampleHz = " + sampleHz);
         if (cueFile != null) {
             if (outScheme.indexOf("%n") < 0 && outScheme.indexOf("%t") < 0) {
-                _reporter.println("The usage of either %n or %t is mandatory in the naming");
-                _reporter.println("scheme if you want to extract more than one track!");
+                System.out.println("The usage of either %n or %t is mandatory in the naming");
+                System.out.println("scheme if you want to extract more than one track!");
                 return;
             }
         }
@@ -248,8 +241,8 @@ public class MainCLI {
                     long emp1 = toSampleRate(emp);
                     cueFile.getTrack(i).setEndSector(emp1);
                     
-                    _reporter.println("Start sector: smp = " + smp + ", smp1 = " + smp1);
-                    _reporter.println("End sector  : emp = " + emp + ", emp1 = " + emp1);
+                    System.out.println("Start sector: smp = " + smp + ", smp1 = " + smp1);
+                    System.out.println("End sector  : emp = " + emp + ", emp1 = " + emp1);
                 }
             }
 
@@ -308,7 +301,7 @@ public class MainCLI {
                 if (outDir != null)
                     fn = outDir + fn;
 
-                _reporter.println("writing \"" + fn + "\" ...");
+                System.out.println("writing \"" + fn + "\" ...");
                 FileOutputStream fops = new FileOutputStream(fn);
 
                 try {
@@ -358,7 +351,7 @@ public class MainCLI {
                     }
                 }
             }
-            _reporter.println("done.");
+            System.out.println("done.");
         }
     }
 
@@ -505,7 +498,7 @@ public class MainCLI {
                                 String tok = st.nextToken();
                                 long smp1 = MSFstring2sector(tok) * 588L;
                                 long smp = toSampleRate(smp1);
-                                _reporter.println("smp(588) = " + smp1 + ", smp = " + smp);
+                                System.out.println("smp(588) = " + smp1 + ", smp = " + smp);
                                 if (idx == 1) {
 
                                     if (currentTrack != null) {
@@ -588,13 +581,13 @@ public class MainCLI {
                     }
                 }
                 catch (NumberFormatException nfe) {
-                    _reporter.println("Error parsing custom track list");
+                    System.out.println("Error parsing custom track list");
                     return null;
                 }
                 r.add(new long[] { no, si, ee });
             }
             else {
-                _reporter.println("Error parsing custom track list");
+                System.out.println("Error parsing custom track list");
                 return null;
             }
         }
@@ -606,49 +599,49 @@ public class MainCLI {
     }
 
     private void printHelp() {
-        _reporter.println("Description:");
-        _reporter.println("  This tool is able to do sample granular cutting of MP3 streams via");
-        _reporter.println("  the LAME-Tag's delay/padding values. A player capable of properly");
-        _reporter.println("  interpreting the LAME-Tag is needed in order to enjoy this tool.\n");
-        _reporter.println("Syntax:");
-        _reporter.println("  java -jar pcutmp3.jar [<options>] [<source-mp3-filename>]");
-        _reporter.println("  (Default operation is scanning only)\n");
-        _reporter.println("Available options:");
-        _reporter.println("  --cue <cue-filename>     split source mp3 via cue sheet");
-        _reporter.println("                           mp3 source can be omitted if it's already");
-        _reporter.println("                           referenced by the CUE sheet");
-        // _reporter.println(
+        System.out.println("Description:");
+        System.out.println("  This tool is able to do sample granular cutting of MP3 streams via");
+        System.out.println("  the LAME-Tag's delay/padding values. A player capable of properly");
+        System.out.println("  interpreting the LAME-Tag is needed in order to enjoy this tool.\n");
+        System.out.println("Syntax:");
+        System.out.println("  java -jar pcutmp3.jar [<options>] [<source-mp3-filename>]");
+        System.out.println("  (Default operation is scanning only)\n");
+        System.out.println("Available options:");
+        System.out.println("  --cue <cue-filename>     split source mp3 via cue sheet");
+        System.out.println("                           mp3 source can be omitted if it's already");
+        System.out.println("                           referenced by the CUE sheet");
+        // System.out.println(
         // "  --crop t:s-e[,t:s-e[..]] crop tracks manually, t = track#");
-        // _reporter.println(
+        // System.out.println(
         // "                           s = start sample/time (inclusive)");
-        // _reporter.println(
+        // System.out.println(
         // "                           e = end sample/time (exclusive)");
-        // _reporter.println(
+        // System.out.println(
         // "                           Time is specified in [XXm]YY[.ZZ]s");
-        // _reporter.println(
+        // System.out.println(
         // "                           for XX minutes and YY.ZZ seconds");
-        _reporter.println("  --out <scheme>           specify custom naming scheme where");
-        _reporter.println("                           %s = source filename (without extension)");
-        _reporter.println("                           %n = track number (leading zero)");
-        _reporter.println("                           %t = track title (from CUE sheet)");
-        _reporter.println("                           %p = track performer (from CUE sheet)");
-        _reporter.println("                           %a = album name (from CUE sheet)");
-        _reporter.println("                           Default is \"" + DEFAULT_NAMING_SCHEME
+        System.out.println("  --out <scheme>           specify custom naming scheme where");
+        System.out.println("                           %s = source filename (without extension)");
+        System.out.println("                           %n = track number (leading zero)");
+        System.out.println("                           %t = track title (from CUE sheet)");
+        System.out.println("                           %p = track performer (from CUE sheet)");
+        System.out.println("                           %a = album name (from CUE sheet)");
+        System.out.println("                           Default is \"" + DEFAULT_NAMING_SCHEME
                 + "\"");
-        _reporter.println("  --dir <directory>        specify destination directory");
-        _reporter.println("                           Default is the current working directory");
-        _reporter.println("  --album <albumname>      set album name (for ID3 tag)");
-        _reporter.println("  --artist <artistname>    set artist name (for ID3 tag)");
-        _reporter.println("\nNote:");
-        _reporter.println("  Option parameters which contain space characters must be");
-        _reporter.println("  enclosed via quotation marks (see examples).");
-        _reporter.println("\nExamples:");
-        _reporter.println("  java -jar pcutmp3.jar --cue something.cue --out \"%n - %t\"");
-        _reporter.println("  java -jar pcutmp3.jar --crop 1:0-8000,2:88.23s-3m10s largefile.mp3");
-        _reporter.println("");
-        _reporter.println("Originally developed by Sebastian Gesemann.\n");
-        _reporter.println("Maintained by Chris Banes");
-        _reporter.println("\n  ID3v2 Support added by Chris Banes using the library JID3.\n"
+        System.out.println("  --dir <directory>        specify destination directory");
+        System.out.println("                           Default is the current working directory");
+        System.out.println("  --album <albumname>      set album name (for ID3 tag)");
+        System.out.println("  --artist <artistname>    set artist name (for ID3 tag)");
+        System.out.println("\nNote:");
+        System.out.println("  Option parameters which contain space characters must be");
+        System.out.println("  enclosed via quotation marks (see examples).");
+        System.out.println("\nExamples:");
+        System.out.println("  java -jar pcutmp3.jar --cue something.cue --out \"%n - %t\"");
+        System.out.println("  java -jar pcutmp3.jar --crop 1:0-8000,2:88.23s-3m10s largefile.mp3");
+        System.out.println("");
+        System.out.println("Originally developed by Sebastian Gesemann.\n");
+        System.out.println("Maintained by Chris Banes");
+        System.out.println("\n  ID3v2 Support added by Chris Banes using the library JID3.\n"
                 + "     http://jid3.blinkenlights.org/");
     }
 }
