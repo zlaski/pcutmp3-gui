@@ -240,11 +240,7 @@ public class PCutMP3Gui extends Application
 	            	  if (dir != null) {
 	            		  p.setCueLoc(dir.getAbsolutePath());
 	            	  }
-	            	  MainCLI cli = new MainCLI(new MainCLI.Report() {
-						public void println(String msg) {
-							System.out.println(msg);
-						}
-	            	  });
+	            	  MainCLI cli = new MainCLI();
 	            	  _cue.clear();
 	            	  try {
 	            		  cli.loadCUE(file.getAbsolutePath(), _cue);
@@ -392,18 +388,7 @@ public class PCutMP3Gui extends Application
 		new Thread(new Runnable() {
 		    public void run() {
 				//final StringBuffer sa = new StringBuffer();
-				MainCLI cli = new MainCLI(new MainCLI.Report() {
-					public void println(String msg) {
-						final String M = msg;
-						Platform.runLater(new Runnable() {
-							public void run() {
-								_result.appendText(M + "\n");
-							}
-						});
-						//sa.append(msg);
-						//sa.append("\n");
-					}
-				});
+				MainCLI cli = new MainCLI();
 				String [] args = {  "--cue", _cueFile.getAbsolutePath(), 
 									"--dir", _cueFile.getParentFile().getAbsolutePath(), 
 									"--out", "%n_" + _performer.getText().trim() + "_" + _title.getText().trim() + "_%t" 

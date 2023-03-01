@@ -82,9 +82,9 @@ public class MainCLI {
 
     public static final String DEFAULT_NAMING_SCHEME = "%n. %p - %t";
     
-    //public static void main(String[] args) throws IOException {
-    //    new MainCLI().run(args);
-    //}
+    public static void main(String[] args) throws IOException {
+        new MainCLI().run(args);
+    }
     
     public void run(String[] args) throws IOException {
         System.out.println("\nPCutMP3 -- Properly Cut MP3 v0.99 beta");
@@ -92,6 +92,7 @@ public class MainCLI {
 
         if (args == null || args.length < 1) {
             printHelp();
+            return;
         }
 
         String cutParams = null;
@@ -112,14 +113,14 @@ public class MainCLI {
                 cutParams = args[++i];
                 cutCue = true;
             }
-            // else if (currArg.equals("--crop")) {
-            // if (i + 1 >= args.length) {
-            // missingOptionParam = true;
-            // break;
-            // }
-            // cutParams = args[++i];
-            // cutCue = false;
-            // }
+            else if (currArg.equals("--crop")) {
+                if (i + 1 >= args.length) {
+                    missingOptionParam = true;
+                    break;
+                }
+                cutParams = args[++i];
+                cutCue = false;
+            }
             else if (currArg.equals("--out")) {
                 if (i + 1 >= args.length) {
                     missingOptionParam = true;
@@ -213,10 +214,9 @@ public class MainCLI {
             return;
         }
 
-        /*
-         * if (cutParams != null && !cutCue) { cueFile =
-         * parseManualCrop(cutParams, scannedMP3 .getSamplingFrequency()); }
-         */
+        if (cutParams != null && !cutCue) {
+             cueFile = parseManualCrop(cutParams, scannedMP3 .getSamplingFrequency());
+        }
 
         System.out.println(scannedMP3.toString());
         sampleHz = scannedMP3.getSamplingFrequency();
@@ -231,7 +231,7 @@ public class MainCLI {
 
         if (cueFile != null) {
             // convert sectors.
-            {
+            if (cutCue) {
                 int i;
                 for (i = 0; i < cueFile.getNumberTracks(); i++) {
                     long smp = cueFile.getTrack(i).getStartSector();
@@ -536,8 +536,8 @@ public class MainCLI {
         return cue;
     }
 
-    public long[][] parseManualCrop(String param, float samplingFrequency) {
-        Vector<long[]> r = new Vector<long[]>();
+    public Cue parseManualCrop(String param, float samplingFrequency) {
+        Cue r = new Cue("<MANUAL CROP>", "", "");
         HashSet<Integer> set = new HashSet<Integer>();
         for (StringTokenizer tracks = new StringTokenizer(param, ",", false); tracks
                 .hasMoreTokens();) {
@@ -584,18 +584,17 @@ public class MainCLI {
                     System.out.println("Error parsing custom track list");
                     return null;
                 }
-                r.add(new long[] { no, si, ee });
+                Track t = new Track(String.format("<TRACK %d>", no), "", "");
+                t.setStartSector(si);
+                t.setEndSector(ee);
+                r.addTrack(no, t);
             }
             else {
                 System.out.println("Error parsing custom track list");
                 return null;
             }
         }
-        long[][] rr = new long[r.size()][];
-        for (int i = 0; i < r.size(); i++) {
-            rr[i] = r.elementAt(i);
-        }
-        return rr;
+        return r;
     }
 
     private void printHelp() {
@@ -610,16 +609,11 @@ public class MainCLI {
         System.out.println("  --cue <cue-filename>     split source mp3 via cue sheet");
         System.out.println("                           mp3 source can be omitted if it's already");
         System.out.println("                           referenced by the CUE sheet");
-        // System.out.println(
-        // "  --crop t:s-e[,t:s-e[..]] crop tracks manually, t = track#");
-        // System.out.println(
-        // "                           s = start sample/time (inclusive)");
-        // System.out.println(
-        // "                           e = end sample/time (exclusive)");
-        // System.out.println(
-        // "                           Time is specified in [XXm]YY[.ZZ]s");
-        // System.out.println(
-        // "                           for XX minutes and YY.ZZ seconds");
+        System.out.println("  --crop t:s-e[,t:s-e[..]] crop tracks manually, t = track#");
+        System.out.println("                           s = start sample/time (inclusive)");
+        System.out.println("                           e = end sample/time (exclusive)");
+        System.out.println("                           Time is specified in [XXm]YY[.ZZ]s");
+        System.out.println("                           for XX minutes and YY.ZZ seconds");
         System.out.println("  --out <scheme>           specify custom naming scheme where");
         System.out.println("                           %s = source filename (without extension)");
         System.out.println("                           %n = track number (leading zero)");
