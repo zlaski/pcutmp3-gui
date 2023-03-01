@@ -1,0 +1,20 @@
+// In order to run, please install the FULL package (containing JavaFX)
+// of the Liberica JDK (https://bell-sw.com/pages/downloads/)
+
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch MainCLI",
+            "request": "launch",
+            "mainClass": "de.zebee.mpa.MainCLI",
+            "args": "--crop 1:5-1000 Wen-Commotion.backup.mp3",
+            "cwd": "d:\\music\\wurlitzer\\Drum-And-Bass",
+            "stopOnEntry": true
+        }
+    ]
+}
